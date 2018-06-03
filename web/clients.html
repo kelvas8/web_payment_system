@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Clients</title>
+    <link href="css/style.css" rel="stylesheet">
+    <script type="text/javascript">
+
+
+        function postServletJSON(srvUrl,form) {
+            var client ={};
+            var mainform = document.getElementById(form);
+            for (var i=0; i<mainform.elements.length; i++) {
+                if(mainform.elements[i].type == "text") {
+                    client[mainform.elements[i].name]=mainform.elements[i].value;
+                }
+            }
+            var clientJSON = JSON.stringify(client);
+            //alert(clientJSON);
+
+            var request = new XMLHttpRequest;
+            request.open('POST', srvUrl, true);
+            request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            request.send(clientJSON);
+            request.onreadystatechange = function() {
+                if ((request.readyState == 4)&&(request.status==200)) {
+                    if(srvUrl=="/getlistclients") generationTab(request.responseText);
+                    if(srvUrl=="/edit")  postServletJSON('/getlistclients','form_id');
+                    if(srvUrl=="/insert")  postServletJSON('/getlistclients','form_id');
+                } }
+        }
+
+        function generationTab(resp) {
+            try {
+                var idElem = document.getElementById("tl");
+                idElem.parentNode.removeChild(idElem);
+                //alert(1);
+            } catch (err) {
+                //alert(err);
+            }
+            var newTable=document.createElement('table');
+            newTable.setAttribute('id','tl');
+            newTable.setAttribute('width','700');
+            //newTable.setAttribute('border','2');
+            //alert(resp);
+            var clients = JSON.parse(resp);
+            //alert(clients);
+            for (var key in clients) {
+                //alert( "Ключ: " + key + " значение: " + clients[key] );
+                //alert(clients[key].name);
+                var newRow = newTable.insertRow(key);
+                var newCell = newRow.insertCell(0);
+                newCell.width="200";
+                newCell.innerHTML=clients[key].name;
+
+                var newCell = newRow.insertCell(1);
+                newCell.width="400";
+                newCell.innerHTML=clients[key].patronymic;
+
+                var newCell = newRow.insertCell(2);
+                newCell.width="400";
+                newCell.innerHTML=clients[key].surname;
+
+                var newCell = newRow.insertCell(3);
+                newCell.width="400";
+                newCell.innerHTML=clients[key].birthday;
+
+                var newCell = newRow.insertCell(4);
+                newCell.width="120";
+                newCell.className="editcell";
+                newCell.innerHTML="<input id=\""+clients[key].id+"\"  type=\"button\" class=\"edit\" name=\"edit'+clients[key].id+'\" value=\"Edit\" onclick=\"editClient(this.id)\" />";
+
+            }
+            var centerBody = document.getElementById('center');
+            centerBody.insertBefore(newTable,centerBody.afterChild);
+            //document.body.appendChild(newTable);
+        }
+
+        function editClient(id) {
+            var newForm = document.createElement('form');
+            newForm.setAttribute('id', 'form');
+            var elem0 = document.createElement("input");
+            elem0.setAttribute('type', "text");
+            elem0.setAttribute('name', "id");
+            elem0.setAttribute('value', id);
+            elem0.setAttribute('readonly','readonly');
+            var elem1 = document.createElement("input");
+            elem1.setAttribute('type', "text");
+            elem1.setAttribute('name', "name");
+            elem1.setAttribute('placeholder', "name");
+            var elem2 = document.createElement("input");
+            elem2.setAttribute('type', "text");
+            elem2.setAttribute('name', "patronymic");
+            elem2.setAttribute('placeholder', "patronymic");
+            var elem3 = document.createElement("input");
+            elem3.setAttribute('type', "text");
+            elem3.setAttribute('name', "surname");
+            elem3.setAttribute('placeholder', "surname");
+            var elem4 = document.createElement("input");
+            elem4.setAttribute('type', "text");
+            elem4.setAttribute('name', "birthday");
+            elem4.setAttribute('placeholder', "birthday");
+            var elem5 = document.createElement("input");
+            elem5.setAttribute('type', "button");
+            elem5.setAttribute('name', "edit");
+            elem5.setAttribute('value', "Edit");
+            elem5.setAttribute('onclick', "postServletJSON('/edit','form'); var idElem = document.getElementById('form');\n" +
+                                          "idElem.parentNode.removeChild(idElem); ");
+
+            var centerBody = document.getElementById('center');
+            newForm.appendChild(elem0);
+            newForm.appendChild(elem1);
+            newForm.appendChild(elem2);
+            newForm.appendChild(elem3);
+            newForm.appendChild(elem4);
+            newForm.appendChild(elem5);
+            centerBody.insertBefore(newForm,centerBody.afterChild);
+
+
+        }
+    </script>
+</head>
+<body onload="postServletJSON('/getlistclients','form_id');">
+<div id="center" class="centerBody">
+
+<form id="form_id">
+    <input type="text" name="name" placeholder="name" />
+    <input type="text" name="patronymic" placeholder="patronymic"/>
+    <input type="text" name="surname" placeholder="surname"/>
+    <input type="text" name="birthday" placeholder="birthday"/>
+    <input type="button" name="insert" value="Insert" onclick="postServletJSON('/insert','form_id')" />
+    <input type="button" name="getList" value="Update" onclick="postServletJSON('/getlistclients','form_id')" />
+</form>
+</div>
+</body>
+</html>
