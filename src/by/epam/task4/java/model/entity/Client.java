@@ -59,8 +59,7 @@ public class Client {
     }
 
     public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
+        this.birthday = birthday; }
 
     @Override
     public String toString() {

@@ -17,7 +17,7 @@
             }
             var clientJSON = JSON.stringify(client);
             //alert(clientJSON);
-
+            //alert(srvUrl);
             var request = new XMLHttpRequest;
             request.open('POST', srvUrl, true);
             request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
@@ -27,7 +27,9 @@
                     if(srvUrl=="/getlistclients") generationTab(request.responseText);
                     if(srvUrl=="/edit")  postServletJSON('/getlistclients','form_id');
                     if(srvUrl=="/insert")  postServletJSON('/getlistclients','form_id');
-                } }
+                    if(srvUrl=="/delete")   postServletJSON('/getlistclients','form_id');
+                }
+            }
         }
 
         function generationTab(resp) {
@@ -106,7 +108,12 @@
             elem5.setAttribute('value', "Edit");
             elem5.setAttribute('onclick', "postServletJSON('/edit','form'); var idElem = document.getElementById('form');\n" +
                                           "idElem.parentNode.removeChild(idElem); ");
-
+            var elem6 = document.createElement("input");
+            elem6.setAttribute('type', "button");
+            elem6.setAttribute('name', "delete");
+            elem6.setAttribute('value', "Delete");
+            elem6.setAttribute('onclick', "postServletJSON('/delete','form'); var idElem = document.getElementById('form');\n" +
+                "idElem.parentNode.removeChild(idElem); ");
             var centerBody = document.getElementById('center');
             newForm.appendChild(elem0);
             newForm.appendChild(elem1);
@@ -114,6 +121,7 @@
             newForm.appendChild(elem3);
             newForm.appendChild(elem4);
             newForm.appendChild(elem5);
+            newForm.appendChild(elem6);
             centerBody.insertBefore(newForm,centerBody.afterChild);
 
 
@@ -122,7 +130,7 @@
 </head>
 <body onload="postServletJSON('/getlistclients','form_id');">
 <div id="center" class="centerBody">
-
+  </date-util>
 <form id="form_id">
     <input type="text" name="name" placeholder="name" />
     <input type="text" name="patronymic" placeholder="patronymic"/>
