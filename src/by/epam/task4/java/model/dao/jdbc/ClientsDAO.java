@@ -22,7 +22,7 @@ public class ClientsDAO implements IClientsDAO {
 
     public ClientsDAO() {
         connect = (Connection) PoolConnection.getConnection();
-        System.out.println("successful"+connect);
+        //System.out.println("successful"+connect);
     }
 
 
@@ -44,6 +44,21 @@ public class ClientsDAO implements IClientsDAO {
             flag = true;
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    System.out.println("cannot close statement");
+                }
+            }
+            if (connect != null) {
+                try {
+                    connect.close();
+                } catch (SQLException e) {
+                    System.out.println("cannot close connection");
+                }
+            }
         }
         return flag;
     }
@@ -67,6 +82,21 @@ public class ClientsDAO implements IClientsDAO {
             return resultList;
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    System.out.println("cannot close statement");
+                }
+            }
+            if (connect != null) {
+                try {
+                    connect.close();
+                } catch (SQLException e) {
+                    System.out.println("cannot close connection");
+                }
+            }
         }
         return null;    }
 
@@ -88,6 +118,21 @@ public class ClientsDAO implements IClientsDAO {
             return ps.executeUpdate() != 0;
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    System.out.println("cannot close statement");
+                }
+            }
+            if (connect != null) {
+                try {
+                    connect.close();
+                } catch (SQLException e) {
+                    System.out.println("cannot close connection");
+                }
+            }
         }
         return false;
     }
@@ -110,6 +155,21 @@ public class ClientsDAO implements IClientsDAO {
             return (ps.executeUpdate() != 0);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    System.out.println("cannot close statement");
+                }
+            }
+            if (connect != null) {
+                try {
+                    connect.close();
+                } catch (SQLException e) {
+                    System.out.println("cannot close connection");
+                }
+            }
         }
         return false;
     }
