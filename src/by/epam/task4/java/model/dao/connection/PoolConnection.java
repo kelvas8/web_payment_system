@@ -7,8 +7,8 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 public class PoolConnection {
     private static Connection conn;
-    public static PoolConnection db;
-    private static DataSource ds;
+    public static PoolConnection db = null;
+    private static DataSource ds = null;
     private static String url;
     private static String driver;
     private static String user;
@@ -29,7 +29,7 @@ public class PoolConnection {
         try {
             Context envCtx = (Context) (new InitialContext().lookup("java:comp/env"));
             ds = (DataSource) envCtx.lookup("jdbc/payment_system");
-            System.out.println(url+base+user+pass);
+            //System.out.println(url+base+user+pass);
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -48,11 +48,6 @@ public class PoolConnection {
         if ( db == null ) {
             db = new PoolConnection();
             db.createConn();
-            try {
-                ds.getConnection();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
         return getConn();
     }
