@@ -6,6 +6,11 @@
     <link href="css/style.css" rel="stylesheet">
     <script type="text/javascript">
 
+        function postDeleteJSON(srvUrl,form) {
+            var client = {"id": form };
+            var clientJSON = JSON.stringify(client);
+            requestToServer(srvUrl,clientJSON);
+        }
 
         function postServletJSON(srvUrl,form) {
             var client ={};
@@ -16,7 +21,12 @@
                 }
             }
             var clientJSON = JSON.stringify(client);
-            //alert(clientJSON);
+            alert(clientJSON);
+            requestToServer(srvUrl,clientJSON);
+        }
+
+
+        function requestToServer(srvUrl,clientJSON) {
             //alert(srvUrl);
             var request = new XMLHttpRequest;
             request.open('POST', srvUrl, true);
@@ -51,6 +61,8 @@
                 //alert( "Ключ: " + key + " значение: " + clients[key] );
                 //alert(clients[key].name);
                 var newRow = newTable.insertRow(key);
+                newRow.id="Row"+clients[key].id;
+
                 var newCell = newRow.insertCell(0);
                 newCell.width="200";
                 newCell.innerHTML=clients[key].name;
@@ -70,8 +82,12 @@
                 var newCell = newRow.insertCell(4);
                 newCell.width="120";
                 newCell.className="editcell";
-                newCell.innerHTML="<input id=\""+clients[key].id+"\"  type=\"button\" class=\"edit\" name=\"edit'+clients[key].id+'\" value=\"Edit\" onclick=\"editClient(this.id)\" />";
+                newCell.innerHTML="<input id=\""+clients[key].id+"\"  type=\"button\" class=\"edit\" name=\"edit"+clients[key].id+"\" value=\"Edit\" onclick=\"editClient(this.id)\" />";
 
+                var newCell = newRow.insertCell(5);
+                newCell.width="120";
+                newCell.className="editcell";
+                newCell.innerHTML="<input type=\"button\" class=\"delete\" value=\"Delete\" onclick=\"postDeleteJSON('/delete','"+clients[key].id+"')\" />";
             }
             var centerBody = document.getElementById('center');
             centerBody.insertBefore(newTable,centerBody.afterChild);

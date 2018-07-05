@@ -23,6 +23,15 @@ table { border-collapse: separate; border-spacing: 10px 20px;
     cursor: pointer;
 }
 
+.delete {
+    top:5px;
+    opacity: 0.8;
+    padding:  5px 20px;
+    background: red;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
 .editcell {
     border-bottom: 0px;
 }
